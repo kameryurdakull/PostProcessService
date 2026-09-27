@@ -15,7 +15,39 @@ namespace EventSystem
 
     public class EventBus : IEventBus
     {
-        private readonly Dictionary<Type, List<Delegate>> _subscribers = new Dictionary<Type, List<Delegate>>();
+        private sealed class Subscribers<T>
+        {
+            public Action<T>[] Snapshot { get; private set; } = Array.Empty<Action<T>>();
+
+            public void Add(Action<T> callback)
+            {
+                var current = Snapshot;
+                var updated = new Action<T>[current.Length + 1];
+                Array.Copy(current, updated, current.Length);
+                updated[current.Length] = callback;
+                Snapshot = updated;
+            }
+
+            public void Remove(Action<T> callback)
+            {
+                var current = Snapshot;
+                var index = Array.IndexOf(current, callback);
+                if (index < 0) return;
+
+                if (current.Length == 1)
+                {
+                    Snapshot = Array.Empty<Action<T>>();
+                    return;
+                }
+
+                var updated = new Action<T>[current.Length - 1];
+                Array.Copy(current, 0, updated, 0, index);
+                Array.Copy(current, index + 1, updated, index, current.Length - index - 1);
+                Snapshot = updated;
+            }
+        }
+
+        private readonly Dictionary<Type, object> _subscribers = new();
 
         [Inject]
         public EventBus()
@@ -24,41 +56,36 @@ namespace EventSystem
 
         public void Subscribe<T>(Action<T> callback)
         {
-            if (!_subscribers.ContainsKey(typeof(T)))
-                _subscribers[typeof(T)] = new List<Delegate>();
-            
-            _subscribers[typeof(T)].Add(callback);
+            if (!_subscribers.TryGetValue(typeof(T), out var subscribers))
+            {
+                subscribers = new Subscribers<T>();
+                _subscribers.Add(typeof(T), subscribers);
+            }
+
+            ((Subscribers<T>)subscribers).Add(callback);
         }
 
         public void Unsubscribe<T>(Action<T> callback)
         {
-            if (_subscribers.ContainsKey(typeof(T)))
-                _subscribers[typeof(T)].Remove(callback);
+            if (_subscribers.TryGetValue(typeof(T), out var subscribers))
+                ((Subscribers<T>)subscribers).Remove(callback);
         }
 
         public async UniTask PublishAsync<T>(T eventData)
         {
-            if (_subscribers.TryGetValue(typeof(T), out var callbacks))
-            {
-                foreach (var callback in callbacks.ToArray())
-                {
-                    (callback as Action<T>)?.Invoke(eventData);
-                }
-            }
-            
+            Publish(eventData);
             await UniTask.Yield();
         }
-        
+
         public void Publish<T>(T eventMessage)
         {
-            var type = typeof(T);
-            if (!_subscribers.TryGetValue(type, out var subscriber)) return;
+            if (!_subscribers.TryGetValue(typeof(T), out var subscribers)) return;
 
-            var listeners = new List<object>(subscriber); 
-            foreach (var listenerObj in listeners)
+            // Keep the current array stable if a callback changes subscriptions during dispatch.
+            var snapshot = ((Subscribers<T>)subscribers).Snapshot;
+            for (var index = 0; index < snapshot.Length; index++)
             {
-                var listener = listenerObj as Action<T>;
-                listener?.Invoke(eventMessage);
+                snapshot[index]?.Invoke(eventMessage);
             }
         }
     }
