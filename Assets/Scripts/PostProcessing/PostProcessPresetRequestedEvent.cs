@@ -3,6 +3,7 @@ namespace Game.Core.PostProcessing
     public enum PostProcessPresetOperation
     {
         Play,
+        StopPreset,
         StopChannel,
         ResetAll
     }

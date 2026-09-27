@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using DG.Tweening;
 using EventSystem;
 using UnityEngine;
@@ -56,7 +57,8 @@ namespace Game.Core.PostProcessing.Demo
         private UnityAction[] _buttonActions;
         private Tween _cameraTween;
         private Vector3 _cameraHome;
-        private int _selectedIndex = -1;
+        private readonly HashSet<int> _selectedIndices = new();
+        private bool _cameraIsAnimating;
         private bool _previousRunInBackground;
 
         public void Configure(
@@ -104,7 +106,7 @@ namespace Game.Core.PostProcessing.Demo
             }
 
             _resetButton.onClick.AddListener(ResetDemo);
-            ShowStatus("BASELINE", "Choose an effect to compare it with the original scene.");
+            ShowStatus("BASELINE", "Select effects to build a live mix.");
             RefreshButtonColors();
         }
 
@@ -128,28 +130,26 @@ namespace Game.Core.PostProcessing.Demo
         {
             if (_eventBus == null || index < 0 || index >= _entries.Length) return;
 
-            if (_selectedIndex == index)
+            var entry = _entries[index];
+            if (_selectedIndices.Remove(index))
             {
                 _eventBus.Publish(new PostProcessPresetRequestedEvent(
-                    PostProcessPresetOperation.StopChannel,
-                    null,
-                    _entries[index].Preset.Channel,
+                    PostProcessPresetOperation.StopPreset,
+                    entry.Preset,
+                    entry.Preset.Channel,
                     TransitionDuration));
-                SetBaseline();
-                return;
+            }
+            else
+            {
+                _selectedIndices.Add(index);
+                _eventBus.Publish(new PostProcessPresetRequestedEvent(
+                    PostProcessPresetOperation.Play,
+                    entry.Preset,
+                    entry.Preset.Channel,
+                    TransitionDuration));
             }
 
-            var entry = _entries[index];
-            _eventBus.Publish(new PostProcessPresetRequestedEvent(
-                PostProcessPresetOperation.Play,
-                entry.Preset,
-                entry.Preset.Channel,
-                TransitionDuration));
-
-            _selectedIndex = index;
-            ShowStatus(entry.Label, entry.Description);
-            RefreshButtonColors();
-            SetCameraMotion(entry.AnimateCamera);
+            RefreshSelection();
         }
 
         private void ResetDemo()
@@ -161,19 +161,52 @@ namespace Game.Core.PostProcessing.Demo
                 null,
                 PostProcessPresetChannel.Environment,
                 TransitionDuration));
-            SetBaseline();
+            _selectedIndices.Clear();
+            RefreshSelection();
         }
 
-        private void SetBaseline()
+        private void RefreshSelection()
         {
-            _selectedIndex = -1;
-            ShowStatus("BASELINE", "Choose an effect to compare it with the original scene.");
+            if (_selectedIndices.Count == 0)
+            {
+                ShowStatus("BASELINE", "Select effects to build a live mix.");
+            }
+            else if (_selectedIndices.Count == 1)
+            {
+                foreach (var index in _selectedIndices)
+                {
+                    var entry = _entries[index];
+                    ShowStatus(entry.Label, entry.Description);
+                }
+            }
+            else
+            {
+                var labels = new List<string>();
+                for (var index = 0; index < _entries.Length; index++)
+                {
+                    if (_selectedIndices.Contains(index)) labels.Add(_entries[index].Label);
+                }
+
+                var visibleCount = Mathf.Min(2, labels.Count);
+                var summary = string.Join(" + ", labels.GetRange(0, visibleCount));
+                if (labels.Count > visibleCount) summary += $" + {labels.Count - visibleCount} MORE";
+                ShowStatus($"MIX / {_selectedIndices.Count} ACTIVE", summary);
+            }
+
             RefreshButtonColors();
-            SetCameraMotion(false);
+            var animateCamera = false;
+            foreach (var index in _selectedIndices)
+            {
+                if (_entries[index].AnimateCamera) animateCamera = true;
+            }
+
+            SetCameraMotion(animateCamera);
         }
 
         private void SetCameraMotion(bool animate)
         {
+            if (_cameraIsAnimating == animate) return;
+            _cameraIsAnimating = animate;
             _cameraTween?.Kill();
             if (_sceneCamera == null) return;
 
@@ -198,7 +231,7 @@ namespace Game.Core.PostProcessing.Demo
             for (var index = 0; index < _entries.Length; index++)
             {
                 var colors = _entries[index].Button.colors;
-                colors.normalColor = index == _selectedIndex
+                colors.normalColor = _selectedIndices.Contains(index)
                     ? _selectedButtonColor
                     : _normalButtonColor;
                 colors.selectedColor = colors.normalColor;

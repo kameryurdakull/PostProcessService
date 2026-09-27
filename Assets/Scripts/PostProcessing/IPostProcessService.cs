@@ -13,6 +13,7 @@ namespace Game.Core.PostProcessing
         void ResetAll(float duration = 0.2f);
         void BlendWeight(float weight, float duration = 0.2f);
         void PlayPreset(PostProcessPreset preset, float duration = 0.35f);
+        void StopPreset(PostProcessPreset preset, float duration = 0.35f);
         void StopPreset(PostProcessPresetChannel channel, float duration = 0.35f);
         void ResetPresets(float duration = 0.35f);
     }

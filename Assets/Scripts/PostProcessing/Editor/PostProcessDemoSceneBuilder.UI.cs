@@ -44,7 +44,7 @@ namespace Game.Core.PostProcessing.Editor
             SetTopLeft(divider.rectTransform, 40f, 157f, 440f, 2f);
 
             CreateText("Introduction", panel.transform,
-                "A live study of cinematic image treatments.\nSelect an override to inspect its look.",
+                "A live study of cinematic image treatments.\nSelect several effects to build your own mix.",
                 17, FontStyle.Normal, MutedTextColor, TextAnchor.UpperLeft,
                 40f, 182f, 440f, 64f);
 
@@ -73,7 +73,7 @@ namespace Game.Core.PostProcessing.Editor
             SetTopLeft(resetButton.GetComponent<RectTransform>(), 40f, 814f, 440f, 70f);
 
             CreateText("Footer", panel.transform,
-                "CLICK AN ACTIVE EFFECT AGAIN TO DISABLE IT\nBUILT WITH URP VOLUMES + PROBUILDER",
+                "MULTI-SELECT / CLICK AGAIN TO DISABLE\nBUILT WITH URP VOLUMES + PROBUILDER",
                 14, FontStyle.Normal, MutedTextColor, TextAnchor.UpperLeft,
                 40f, 927f, 440f, 70f);
 
@@ -85,7 +85,7 @@ namespace Game.Core.PostProcessing.Editor
             var statusText = CreateText("Status", statusCard.transform, "BASELINE", 26,
                 FontStyle.Bold, Color.white, TextAnchor.MiddleLeft, 25f, 53f, 305f, 44f);
             var descriptionText = CreateText("Description", statusCard.transform,
-                "Choose an effect to compare it with the original scene.", 16,
+                "Select effects to build a live mix.", 16,
                 FontStyle.Normal, MutedTextColor, TextAnchor.UpperLeft,
                 25f, 110f, 305f, 65f);
 
@@ -96,7 +96,7 @@ namespace Game.Core.PostProcessing.Editor
                 FontStyle.Bold, AccentColor, TextAnchor.MiddleLeft,
                 25f, 17f, 305f, 28f);
             CreateText("Instructions", noteCard.transform,
-                "12 looks  /  one scene\nSmooth preset crossfades\nMotion blur includes camera movement",
+                "Combine any of 12 looks\nToggle each effect independently\nMotion blur includes camera movement",
                 16, FontStyle.Normal, MutedTextColor, TextAnchor.UpperLeft,
                 25f, 52f, 305f, 80f);
 

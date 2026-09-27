@@ -211,6 +211,7 @@ namespace Game.Core.PostProcessing.Editor
             serialized.FindProperty("_profile").objectReferenceValue = profile;
             serialized.FindProperty("_channel").enumValueIndex = (int)PostProcessPresetChannel.Environment;
             serialized.FindProperty("_priorityOffset").floatValue = 10f;
+            serialized.FindProperty("_stackable").boolValue = true;
             serialized.ApplyModifiedPropertiesWithoutUndo();
             return preset;
         }

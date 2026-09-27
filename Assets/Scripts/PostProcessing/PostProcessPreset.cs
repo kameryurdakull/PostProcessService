@@ -16,9 +16,11 @@ namespace Game.Core.PostProcessing
         [SerializeField] private VolumeProfile _profile;
         [SerializeField] private PostProcessPresetChannel _channel = PostProcessPresetChannel.Environment;
         [SerializeField] private float _priorityOffset = 10f;
+        [SerializeField] private bool _stackable;
 
         public VolumeProfile Profile => _profile;
         public PostProcessPresetChannel Channel => _channel;
         public float PriorityOffset => _priorityOffset;
+        public bool Stackable => _stackable;
     }
 }

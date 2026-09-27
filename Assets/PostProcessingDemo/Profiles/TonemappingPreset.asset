@@ -15,3 +15,4 @@ MonoBehaviour:
   _profile: {fileID: 11400000, guid: 6e27c8cd155565d419d31d445ecdff7b, type: 2}
   _channel: 0
   _priorityOffset: 10
+  _stackable: 1

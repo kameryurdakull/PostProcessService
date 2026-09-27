@@ -51,7 +51,7 @@ namespace Game.Core.PostProcessing
         private readonly Dictionary<PostProcessEffect, Tween> _activeTweens = new();
         private readonly HashSet<PostProcessEffect> _engagedEffects = new();
         private readonly HashSet<PostProcessEffect> _persistentEffects = new();
-        private readonly Dictionary<PostProcessPresetChannel, ActivePreset> _channelPresets = new();
+        private readonly Dictionary<PostProcessPreset, ActivePreset> _activePresets = new();
         private readonly List<ActivePreset> _presetVolumes = new();
 
         private IEventBus _eventBus;
@@ -59,6 +59,7 @@ namespace Game.Core.PostProcessing
         private Tween _weightTween;
         private float _initialWeight;
         private bool _isSubscribed;
+        private int _activationSequence;
 
         private void Awake()
         {
@@ -171,16 +172,15 @@ namespace Game.Core.PostProcessing
         {
             if (_volume == null || preset == null || preset.Profile == null) return;
 
-            if (_channelPresets.TryGetValue(preset.Channel, out var current))
+            if (_activePresets.TryGetValue(preset, out var current))
             {
-                if (current.Preset == preset)
-                {
-                    TweenPreset(current, 1f, duration);
-                    return;
-                }
+                TweenPreset(current, 1f, duration);
+                return;
+            }
 
-                _channelPresets.Remove(preset.Channel);
-                FadeOutPreset(current, duration);
+            if (!preset.Stackable)
+            {
+                StopPreset(preset.Channel, duration);
             }
 
             var presetObject = new GameObject($"Post Process - {preset.name}");
@@ -190,29 +190,41 @@ namespace Game.Core.PostProcessing
             presetVolume.isGlobal = true;
             presetVolume.priority = _volume.priority
                 + preset.PriorityOffset
-                + (int)preset.Channel * ChannelPriorityStep;
+                + (int)preset.Channel * ChannelPriorityStep
+                + ++_activationSequence * 0.001f;
             presetVolume.sharedProfile = preset.Profile;
             presetVolume.weight = 0f;
 
             var activePreset = new ActivePreset(preset, presetVolume);
             _presetVolumes.Add(activePreset);
-            _channelPresets.Add(preset.Channel, activePreset);
+            _activePresets.Add(preset, activePreset);
             TweenPreset(activePreset, 1f, duration);
+        }
+
+        public void StopPreset(PostProcessPreset preset, float duration = 0.35f)
+        {
+            if (preset == null || !_activePresets.Remove(preset, out var activePreset)) return;
+
+            FadeOutPreset(activePreset, duration);
         }
 
         public void StopPreset(PostProcessPresetChannel channel, float duration = 0.35f)
         {
-            if (!_channelPresets.Remove(channel, out var preset)) return;
+            var presets = new List<PostProcessPreset>();
+            foreach (var pair in _activePresets)
+            {
+                if (pair.Key.Channel == channel) presets.Add(pair.Key);
+            }
 
-            FadeOutPreset(preset, duration);
+            for (var index = 0; index < presets.Count; index++) StopPreset(presets[index], duration);
         }
 
         public void ResetPresets(float duration = 0.35f)
         {
-            var channels = new List<PostProcessPresetChannel>(_channelPresets.Keys);
-            for (var index = 0; index < channels.Count; index++)
+            var presets = new List<PostProcessPreset>(_activePresets.Keys);
+            for (var index = 0; index < presets.Count; index++)
             {
-                StopPreset(channels[index], duration);
+                StopPreset(presets[index], duration);
             }
         }
 
@@ -474,7 +486,8 @@ namespace Game.Core.PostProcessing
 
         private void DestroyAllPresetVolumes()
         {
-            _channelPresets.Clear();
+            _activePresets.Clear();
+            _activationSequence = 0;
             for (var index = _presetVolumes.Count - 1; index >= 0; index--)
             {
                 var preset = _presetVolumes[index];
@@ -516,6 +529,9 @@ namespace Game.Core.PostProcessing
             {
                 case PostProcessPresetOperation.Play:
                     PlayPreset(eventData.Preset, eventData.Duration);
+                    break;
+                case PostProcessPresetOperation.StopPreset:
+                    StopPreset(eventData.Preset, eventData.Duration);
                     break;
                 case PostProcessPresetOperation.StopChannel:
                     StopPreset(eventData.Channel, eventData.Duration);

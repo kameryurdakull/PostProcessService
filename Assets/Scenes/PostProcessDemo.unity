@@ -702,8 +702,8 @@ MonoBehaviour:
     m_LineSpacing: 1
   m_Text: 'A live study of cinematic image treatments.
 
-    Select an override to
-    inspect its look.'
+    Select several effects
+    to build your own mix.'
 --- !u!222 &120510941
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -38589,12 +38589,12 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: '12 looks  /  one scene
+  m_Text: 'Combine any of 12 looks
 
-    Smooth preset crossfades
+    Toggle each effect independently
 
-    Motion blur
-    includes camera movement'
+    Motion
+    blur includes camera movement'
 --- !u!222 &454461772
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -40465,7 +40465,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Choose an effect to compare it with the original scene.
+  m_Text: Select effects to build a live mix.
 --- !u!222 &781124631
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -40763,10 +40763,9 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'CLICK AN ACTIVE EFFECT AGAIN TO DISABLE IT
+  m_Text: 'MULTI-SELECT / CLICK AGAIN TO DISABLE
 
-    BUILT WITH URP VOLUMES
-    + PROBUILDER'
+    BUILT WITH URP VOLUMES + PROBUILDER'
 --- !u!222 &812878626
 CanvasRenderer:
   m_ObjectHideFlags: 0
