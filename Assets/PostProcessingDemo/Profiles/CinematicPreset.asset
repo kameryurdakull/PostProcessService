@@ -1,0 +1,17 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9b2a309874e95a0428645ace0806fcd8, type: 3}
+  m_Name: CinematicPreset
+  m_EditorClassIdentifier: Assembly-CSharp::Game.Core.PostProcessing.PostProcessPreset
+  _profile: {fileID: 11400000, guid: f20ea3cb3a828da45b5895940267d7ae, type: 2}
+  _channel: 0
+  _priorityOffset: 10
