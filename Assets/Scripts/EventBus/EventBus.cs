@@ -5,14 +5,6 @@ using VContainer;
 
 namespace EventSystem
 {
-    public interface IEventBus
-    {
-        void Subscribe<T>(Action<T> callback);
-        void Unsubscribe<T>(Action<T> callback);
-        UniTask PublishAsync<T>(T eventData);
-        void Publish<T>(T eventMessage);
-    }
-
     public class EventBus : IEventBus
     {
         private sealed class Subscribers<T>
