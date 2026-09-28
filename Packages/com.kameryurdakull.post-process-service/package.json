@@ -1,8 +1,8 @@
 {
   "name": "com.kameryurdakull.post-process-service",
   "version": "1.0.0",
-  "displayName": "Post Process Service",
-  "description": "Event-driven URP volume controls and stackable post-processing presets with VContainer integration.",
+  "displayName": "URP Post-Processing Toolkit",
+  "description": "Event-driven URP post-processing toolkit with volume controls, stackable presets, and VContainer integration.",
   "license": "MIT",
   "unity": "6000.3",
   "author": {

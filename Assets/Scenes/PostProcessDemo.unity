@@ -42513,7 +42513,7 @@ GameObject:
   - component: {fileID: 1089416348}
   - component: {fileID: 1089416347}
   m_Layer: 0
-  m_Name: Post Process Service
+  m_Name: URP Post-Processing Toolkit
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

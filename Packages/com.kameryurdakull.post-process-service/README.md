@@ -1,4 +1,4 @@
-# Post Process Service
+# URP Post-Processing Toolkit
 
 An event-driven URP post-processing service for Unity 6.3. It offers tweened numeric controls, profile-based presets, independent preset mixing, and a small EventBus. The package includes the runtime API and inspectors. The repository also contains a ProBuilder demo scene.
 

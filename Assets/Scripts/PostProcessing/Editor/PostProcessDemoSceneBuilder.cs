@@ -84,7 +84,7 @@ namespace Game.Core.PostProcessing.Editor
             var sceneCamera = CreateCamera();
             CreateLighting();
 
-            var serviceObject = new GameObject("Post Process Service");
+            var serviceObject = new GameObject("URP Post-Processing Toolkit");
             var volume = serviceObject.AddComponent<Volume>();
             volume.isGlobal = true;
             volume.priority = 0f;

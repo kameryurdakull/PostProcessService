@@ -1,6 +1,6 @@
-# Post Process Service
+# URP Post-Processing Toolkit
 
-A reusable, event-driven post-processing service for Unity 6.3 and URP 17.3. It provides numeric effect tweens, stackable Volume presets, VContainer integration, and an included EventBus.
+A reusable, event-driven post-processing toolkit for Unity 6.3 and URP 17.3. It provides numeric effect tweens, stackable Volume presets, VContainer integration, and an included EventBus.
 
 ![Demo with multiple effects selected](Docs/PostProcessDemoMixPreview.png)
 
