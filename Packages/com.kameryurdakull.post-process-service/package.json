@@ -1,0 +1,26 @@
+{
+  "name": "com.kameryurdakull.post-process-service",
+  "version": "1.0.0",
+  "displayName": "Post Process Service",
+  "description": "Event-driven URP volume controls and stackable post-processing presets with VContainer integration.",
+  "license": "MIT",
+  "unity": "6000.3",
+  "author": {
+    "name": "Kamer Yurdakull",
+    "url": "https://github.com/kameryurdakull"
+  },
+  "dependencies": {
+    "com.unity.render-pipelines.universal": "17.3.0"
+  },
+  "documentationUrl": "https://github.com/kameryurdakull/PostProcessService",
+  "changelogUrl": "https://github.com/kameryurdakull/PostProcessService/blob/main/Packages/com.kameryurdakull.post-process-service/CHANGELOG.md",
+  "licensesUrl": "https://github.com/kameryurdakull/PostProcessService/blob/main/LICENSE.md",
+  "keywords": [
+    "post-processing",
+    "urp",
+    "volume",
+    "vcontainer",
+    "unitask",
+    "dotween"
+  ]
+}

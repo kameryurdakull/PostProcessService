@@ -1,0 +1,33 @@
+{
+  "name": "Kamer.PostProcessService.Editor",
+  "rootNamespace": "Game.Core.PostProcessing.Editor",
+  "references": [
+    "Kamer.PostProcessService",
+    "Unity.RenderPipelines.Core.Runtime",
+    "Unity.RenderPipelines.Universal.Runtime"
+  ],
+  "includePlatforms": ["Editor"],
+  "excludePlatforms": [],
+  "allowUnsafeCode": false,
+  "overrideReferences": false,
+  "precompiledReferences": [],
+  "autoReferenced": true,
+  "defineConstraints": [
+    "POST_PROCESS_VCONTAINER",
+    "POST_PROCESS_UNITASK",
+    "DOTWEEN"
+  ],
+  "versionDefines": [
+    {
+      "name": "jp.hadashikick.vcontainer",
+      "expression": "",
+      "define": "POST_PROCESS_VCONTAINER"
+    },
+    {
+      "name": "com.cysharp.unitask",
+      "expression": "",
+      "define": "POST_PROCESS_UNITASK"
+    }
+  ],
+  "noEngineReferences": false
+}

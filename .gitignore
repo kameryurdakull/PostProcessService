@@ -83,6 +83,7 @@ mono_crash.*
 *.aab
 *.unitypackage
 *.unitypackage.meta
+!/Releases/PostProcessService-*.unitypackage
 *.app
 
 # Crashlytics generated file
