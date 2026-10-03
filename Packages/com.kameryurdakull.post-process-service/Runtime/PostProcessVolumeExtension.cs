@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using DG.Tweening;
-using EventSystem;
 using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
@@ -54,7 +53,7 @@ namespace Game.Core.PostProcessing
         private readonly Dictionary<PostProcessPreset, ActivePreset> _activePresets = new();
         private readonly List<ActivePreset> _presetVolumes = new();
 
-        private IEventBus _eventBus;
+        private IPostProcessEventBus _eventBus;
         private Volume _volume;
         private Tween _weightTween;
         private float _initialWeight;
@@ -76,7 +75,7 @@ namespace Game.Core.PostProcessing
         }
 
         [Inject]
-        public void Construct(IEventBus eventBus)
+        public void Construct(IPostProcessEventBus eventBus)
         {
             _eventBus = eventBus;
             Subscribe();

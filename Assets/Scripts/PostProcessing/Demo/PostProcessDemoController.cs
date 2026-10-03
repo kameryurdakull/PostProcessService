@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using DG.Tweening;
-using EventSystem;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
@@ -53,7 +52,7 @@ namespace Game.Core.PostProcessing.Demo
         [SerializeField] private Color _normalButtonColor = new(0.10f, 0.15f, 0.22f, 0.95f);
         [SerializeField] private Color _selectedButtonColor = new(0.06f, 0.43f, 0.47f, 1f);
 
-        private IEventBus _eventBus;
+        private IPostProcessEventBus _eventBus;
         private UnityAction[] _buttonActions;
         private Tween _cameraTween;
         private Vector3 _cameraHome;
@@ -76,7 +75,7 @@ namespace Game.Core.PostProcessing.Demo
         }
 
         [Inject]
-        public void Construct(IEventBus eventBus)
+        public void Construct(IPostProcessEventBus eventBus)
         {
             _eventBus = eventBus;
         }

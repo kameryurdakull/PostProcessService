@@ -1,6 +1,6 @@
 {
   "name": "com.kameryurdakull.post-process-service",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "displayName": "URP Post-Processing Toolkit",
   "description": "Event-driven URP post-processing toolkit with volume controls, stackable presets, and VContainer integration.",
   "license": "MIT",
@@ -20,7 +20,6 @@
     "urp",
     "volume",
     "vcontainer",
-    "unitask",
     "dotween"
   ]
 }

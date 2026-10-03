@@ -19,6 +19,7 @@ namespace Game.Core.PostProcessing.Demo
         protected override void Configure(IContainerBuilder builder)
         {
             builder.Register<IEventBus, EventBus>(Lifetime.Singleton);
+            builder.Register<IPostProcessEventBus, PostProcessEventBusAdapter>(Lifetime.Singleton);
             builder.RegisterComponent(_service).As<IPostProcessService>();
             builder.RegisterComponent(_controller);
         }
